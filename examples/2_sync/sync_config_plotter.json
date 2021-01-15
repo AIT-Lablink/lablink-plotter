@@ -1,0 +1,21 @@
+{
+  "syncParams": {
+    "simBeginTime": "01.01.1970 00:00:00",
+    "simEndTime": "01.01.1970 00:01:00",
+    "simMode": "SIM",
+    "simScaleFactor": 1,
+    "simStepSize_ms": 200
+  },
+  "requiredClients": [
+    {
+      "clientGroup": "PlotterDemo",
+      "clientId": "TestPlotterSync",
+      "Parameter": { }
+    },
+    {
+      "clientGroup": "PlotterDemo",
+      "clientId": "DataSourceSync",
+      "Parameter": { }
+    }
+  ]
+}
