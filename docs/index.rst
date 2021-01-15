@@ -5,17 +5,17 @@ AIT Lablink Plotter
 .. meta::
    :description lang=en: AIT Lablink plotter
 
-This package provides LabLink clients that visualize data as plotted graphs in a separate window.
+This package provides Lablink clients that visualize data as plotted graphs in a separate window.
 These plotted graphs are continuously updated while the client is running, showing the input data as a function of time.
 
-The LabLink clients provided by this package are:
+The Lablink clients provided by this package are:
 
 * *PlotterAsync*: this client runs asynchronously and plots new data points as a function of wall-clock time
 * *PlotterSync*: this client runs synchronoulsy (i.e., synchronized by a `sync host <https://github.com/AIT-Lablink/lablink-sync-host>`__) and plots new data points as a function of synchronization time
 
 .. image:: img/plot.png
    :align: center
-   :alt: LabLink plotter client.
+   :alt: Lablink plotter client.
    
 
 Installation

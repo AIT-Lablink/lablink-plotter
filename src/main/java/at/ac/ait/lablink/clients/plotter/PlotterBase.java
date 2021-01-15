@@ -64,7 +64,7 @@ import javax.swing.SwingUtilities;
 /**
  * Class PlotterBase.
  */
-public abstract class PlotterBase extends LabLinkPlotLive {
+public abstract class PlotterBase extends LablinkPlotLive {
 
   /** Logger. */
   protected static final Logger logger = LogManager.getLogger( "Plotter" );
@@ -107,7 +107,7 @@ public abstract class PlotterBase extends LabLinkPlotLive {
   /** Flag for testing (write config and exit). */
   private static boolean writeConfigAndExitFlag;
 
-  /** LabLink client instance. */
+  /** Lablink client instance. */
   protected LlClient client;
 
   /** Title of the plotter window. */
@@ -333,7 +333,7 @@ public abstract class PlotterBase extends LabLinkPlotLive {
 
 
   /**
-   * Configure the LabLink client.
+   * Configure the Lablink client.
    *
    * @param jsonConfig configuration data (JSON format)
    * @throws at.ac.ait.lablink.core.client.ex.CommInterfaceNotSupportedException
@@ -430,7 +430,7 @@ public abstract class PlotterBase extends LabLinkPlotLive {
 
 
   /**
-   * Configure the LabLink client data services, which serve as inputs for the plotter.
+   * Configure the Lablink client data services, which serve as inputs for the plotter.
    *
    * @param jsonConfig configuration data (JSON format)
    * @throws at.ac.ait.lablink.core.client.ex.ServiceTypeDoesNotMatchClientType

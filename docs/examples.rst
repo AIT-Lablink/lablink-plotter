@@ -1,7 +1,7 @@
 Prerequisites
 =============
 
-Required LabLink resources
+Required Lablink resources
 --------------------------
 
 The following Lablink resources are required:

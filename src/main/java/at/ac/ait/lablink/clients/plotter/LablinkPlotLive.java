@@ -4,7 +4,7 @@
 //
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-// Class LabLinkPlotLive is a modified version of PtPlots's class PlotLive, for details see:
+// Class LablinkPlotLive is a modified version of PtPlots's class PlotLive, for details see:
 // https://ptolemy.berkeley.edu/java/ptplot5.10/doc/codeDoc/ptolemy/plot/PlotLive.html
 //
 // Hence, the following lines reproduce the original copyright notice of PtPlot:
@@ -37,7 +37,7 @@ import javax.swing.JButton;
 
 
 /**
- * Class LabLinkPlotLive.
+ * Class LablinkPlotLive.
  *
  * <p>Plot signals dynamically, where points can be added at any time and the display 
  * will be updated. This class is abstract, so it must be used by creating a derived class. 
@@ -47,10 +47,10 @@ import javax.swing.JButton;
  * constructor by calling methods in the Plot or PlotBox classes (both of which are base
  * classes).
  *
- * <p>Class LabLinkPlotLive is a modified version of PtPlots's class PlotLive, for details see:
+ * <p>Class LablinkPlotLive is a modified version of PtPlots's class PlotLive, for details see:
  * https://ptolemy.berkeley.edu/java/ptplot5.10/doc/codeDoc/ptolemy/plot/PlotLive.html
  */
-public abstract class LabLinkPlotLive extends Plot implements Runnable {
+public abstract class LablinkPlotLive extends Plot implements Runnable {
 
   /** Main execution thread. */
   private Thread plotLiveThread = null;
@@ -127,7 +127,7 @@ public abstract class LabLinkPlotLive extends Plot implements Runnable {
       continueButton.setEnabled( false );
     }
     if ( plotLiveThread == null ) {
-      plotLiveThread = new Thread( this, "LabLinkPlotLive Thread" );
+      plotLiveThread = new Thread( this, "LablinkPlotLive Thread" );
       plotLiveThread.start();
     } else {
       notifyAll();

@@ -4,7 +4,7 @@ Overview
 The configuration has to be JSON-formatted.
 It is divided into the following three categories:
 
-* **Client**: basic configuration of the LabLink client (JSON object)
+* **Client**: basic configuration of the Lablink client (JSON object)
 * **Input**: configuration of the client's inputs, each visualized as individual dataset (JSON array of JSON objects)
 * **Plot**: configuration of the plot (JSON object)
 
@@ -14,10 +14,10 @@ Client configuration
 * **ClientName**: client name
 * **GroupName**: group name
 * **ScenarioName**: scenario name
-* **labLinkPropertiesUrl**: URI to LabLink configuration
+* **labLinkPropertiesUrl**: URI to Lablink configuration
 * **syncHostPropertiesUrl**: URI to sync host configuration
 * **ClientDescription**: description of the client (optional)
-* **ClientShell** activate LabLink shell (optional, default: ``false``).
+* **ClientShell** activate Lablink shell (optional, default: ``false``).
 
 Input configuration
 ===================

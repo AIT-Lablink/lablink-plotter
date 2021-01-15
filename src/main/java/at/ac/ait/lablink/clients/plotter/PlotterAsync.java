@@ -159,7 +159,7 @@ public class PlotterAsync extends PlotterBase {
   }
 
   /**
-   * Configure the LabLink client.
+   * Configure the Lablink client.
    *
    * @param jsonConfig configuration data (JSON format)
    * @throws at.ac.ait.lablink.core.client.ex.CommInterfaceNotSupportedException
@@ -176,7 +176,7 @@ public class PlotterAsync extends PlotterBase {
 
     // General Lablink properties configuration.
     String llPropUri = this.<String>getRequiredConfigParam( clientConfig,
-        CLIENT_URI_LL_PROPERTIES, String.format( "LabLink client configuration URI missing "
+        CLIENT_URI_LL_PROPERTIES, String.format( "Lablink client configuration URI missing "
         + "(%1$s)", CLIENT_URI_LL_PROPERTIES ) );
 
     // Sync properties configuration.
