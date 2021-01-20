@@ -4,7 +4,7 @@
 
 This package provides Lablink clients that visualize data as plotted graphs in a separate window.
 These plotted graphs are continuously updated while the client is running, showing the input data as a function of time.
-For more information, please refer to the [online documentation](https://ait-lablink.readthedocs.io/projects/lablink-plotter).
+For more information, please refer to the [online documentation](https://ait-lablink.readthedocs.io/projects/ait-lablink-plotter).
 
 ## Acknowledgement
 
