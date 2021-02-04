@@ -12,4 +12,6 @@ COPY /Y %~DP0\sync_config_plotter.json .
 REM Logger configuration.
 SET LOGGER_CONFIG=-Dlog4j.configurationFile=%LLCONFIG%ait.all.all.log4j2
 
-java.exe %LOGGER_CONFIG% -jar %SYNC_JAR_FILE% %CONFIG_URI%
+"%JAVA_HOME%\bin\java.exe" %LOGGER_CONFIG% -jar %SYNC_JAR_FILE% %CONFIG_URI%
+
+PAUSE

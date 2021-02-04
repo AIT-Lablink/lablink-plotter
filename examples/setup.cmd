@@ -25,3 +25,9 @@ SET SYNC_JAR_FILE=%PLOTTER_ROOT_DIR%\target\dependency\sync-0.0.1-jar-with-depen
 
 REM Path to Java JAR file of config server.
 SET CONFIG_JAR_FILE=%PLOTTER_ROOT_DIR%\target\dependency\config-0.0.1-jar-with-dependencies.jar
+
+REM Check if environment variable JAVA_HOME has been defined.
+IF NOT DEFINED JAVA_HOME (
+    ECHO WARNING: environment variable JAVA_HOME not has been defined!
+    PAUSE
+)
