@@ -31,7 +31,7 @@ Configuration for each input:
 * **MarksStyle**: set the marks style, allowed values are ``none``, ``points`` and ``dots`` (optional, default: ``dots``)
 * **Connected**: if ``true``, subsequent points in the plot are connected with a line (optional, default: ``true``)
 * **Impulses**: if ``true``, then a line will be drawn from any plotted point down to the x axis (optional, default: ``false``)
-
+* **WriteToFile**: if ``true``, then new values will not only be plotted to the screen but also written to a CSV output file called "*<InputID>.csv*" (optional, default: ``false``)
 
 Plot configuration
 ==================
@@ -81,7 +81,8 @@ Example configuration
        },
        {
          "DataType": "long",
-         "InputID": "Input2"
+         "InputID": "Input2",
+         "WriteToFile": true
        }
      ],
      "Plot": {

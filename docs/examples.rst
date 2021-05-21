@@ -33,7 +33,7 @@ To run the example, execute all scripts either in separate command prompt window
 
 * :github_blob:`dpb.cmd <examples/1_async/dpb.cmd>`: runs the data point bridge service, connecting the data source and the plotter
 * :github_blob:`source.cmd <examples/1_async/source.cmd>`: runs the data source, which will send data to the plotter
-* :github_blob:`plot.cmd <examples/1_async/plot.cmd>`: runs the plotter, which will plot incoming data
+* :github_blob:`plot.cmd <examples/1_async/plot.cmd>`: runs the plotter, which will plot incoming data to the screen (and write one of the inputs to a CSV output file)
 
 The order in which the scripts are started is in principle arbitrary.
 
@@ -45,7 +45,7 @@ To run the example, execute all scripts either in separate command prompt window
 
 * :github_blob:`dpb.cmd <examples/2_sync/dpb.cmd>`: runs the data point bridge service, connecting the data source and the plotter
 * :github_blob:`source.cmd <examples/2_sync/source.cmd>`: runs the data source, which will send data to the plotter
-* :github_blob:`plot.cmd <examples/2_sync/plot.cmd>`: runs the plotter, which will plot incoming data
+* :github_blob:`plot.cmd <examples/2_sync/plot.cmd>`: runs the plotter, which will plot incoming data to the screen (and write one of the inputs to a CSV output file)
 * :github_blob:`sync.cmd <examples/2_sync/sync.cmd>`: runs the sync host
 
 Start the data point bridge and the clients first (in arbitrary order).
