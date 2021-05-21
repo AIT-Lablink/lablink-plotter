@@ -6,13 +6,13 @@ REM Connection string for configuration server.
 SET LLCONFIG=http://localhost:10101/get?id=
 
 REM Version of plotter package.
-SET VERSION=0.0.1-SNAPSHOT
+SET VERSION=0.0.2
 
 REM Root directory of plotter package (only change this if you really know what you are doing).
 SET PLOTTER_ROOT_DIR=%~DP0..
 
 REM Path to Java JAR file of plotter package.
-SET PLOTTER_JAR_FILE=%PLOTTER_ROOT_DIR%\target\assembly\plotter-0.0.1-jar-with-dependencies.jar 
+SET PLOTTER_JAR_FILE=%PLOTTER_ROOT_DIR%\target\assembly\plotter-%VERSION%-jar-with-dependencies.jar
 
 REM Directory containing Java class files for testing.
 SET PLOTTER_TEST_CLASS_DIR=%PLOTTER_ROOT_DIR%\target\test-classes
