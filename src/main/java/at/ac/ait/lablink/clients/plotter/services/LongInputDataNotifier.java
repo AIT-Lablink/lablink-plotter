@@ -14,21 +14,33 @@ import at.ac.ait.lablink.core.service.LlService;
 /**
  * Class LongInputDataNotifier.
  */
-public class LongInputDataNotifier implements IServiceStateChangeNotifier<LlService, Long> {
+public class LongInputDataNotifier
+    extends InputDataFileWriterBase
+    implements IServiceStateChangeNotifier<LlService, Long> {
 
   private final PlotterBase plotter;
   private final int dataset;
-
+  private final boolean writeToFile;
 
   /**
    * Constructor.
    *
+   * @param id input name
    * @param pl associated plotter instance
    * @param ds unique integer ID of associated client input
+   * @param wf if true, in addition to plotting also write new values to CSV file
+   * @throws java.io.IOException adding header to the CSV output file failed
    */
-  public LongInputDataNotifier( PlotterBase pl, int ds ) {
+  public LongInputDataNotifier( String id, PlotterBase pl, int ds, boolean wf )
+      throws java.io.IOException {
     plotter = pl;
     dataset = ds;
+    writeToFile = wf;
+
+    if ( writeToFile ) {
+      // Initialize CSV output file.
+      initializeFileWriter( id, id + ".csv" );
+    }
   }
 
 
@@ -42,6 +54,15 @@ public class LongInputDataNotifier implements IServiceStateChangeNotifier<LlServ
 
     if ( false == plotter.isPaused() ) {
       plotter.addPoint( dataset, time, newVal.doubleValue(), true );
+
+      if ( true == writeToFile ) {
+        try {
+          // Write new value to CSV output file.
+          writeDataToFile( time, newVal );
+        } catch ( java.io.IOException ex ) {
+          System.out.println( "Failed to print data to file." );
+        }
+      }
     }
   }
 }

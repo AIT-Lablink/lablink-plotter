@@ -86,6 +86,7 @@ public abstract class PlotterBase extends LablinkPlotLive {
   protected static final String INPUT_LINE_TAG = "LineStyle";
   protected static final String INPUT_MARKS_TAG = "MarksStyle";
   protected static final String INPUT_UNIT_TAG = "Unit";
+  protected static final String INPUT_WRITE_TO_FILE_TAG = "WriteToFile";
 
   protected static final String PLOT_CONFIG_TAG = "Plot";
   protected static final String PLOT_AUTOMATIC_RESCALE_TAG = "AutomaticRescale";
@@ -129,6 +130,8 @@ public abstract class PlotterBase extends LablinkPlotLive {
    *   IO error
    * @throws java.net.MalformedURLException
    *   malformed URL
+   * @throws java.io.IOException
+   *   IO error
    * @throws java.util.NoSuchElementException
    *   no such element
    */
@@ -286,6 +289,8 @@ public abstract class PlotterBase extends LablinkPlotLive {
    *   service type does not match client type
    * @throws org.apache.commons.configuration.ConfigurationException
    *   configuration error
+   * @throws java.io.IOException
+   *   IO error
    * @throws java.util.NoSuchElementException
    *   no such element
    */
@@ -299,6 +304,7 @@ public abstract class PlotterBase extends LablinkPlotLive {
       at.ac.ait.lablink.core.client.ex.ServiceIsNotRegisteredWithClientException,
       at.ac.ait.lablink.core.client.ex.ServiceTypeDoesNotMatchClientType,
       org.apache.commons.configuration.ConfigurationException,
+      java.io.IOException,
       java.util.NoSuchElementException {
 
     // Retrieve basic client configuration.
@@ -435,9 +441,12 @@ public abstract class PlotterBase extends LablinkPlotLive {
    * @param jsonConfig configuration data (JSON format)
    * @throws at.ac.ait.lablink.core.client.ex.ServiceTypeDoesNotMatchClientType
    *   service type does not match client type
+   * @throws java.io.IOException
+   *   IO error
    */
   private void configureClientInputs( JSONObject jsonConfig ) throws
-      at.ac.ait.lablink.core.client.ex.ServiceTypeDoesNotMatchClientType {
+      at.ac.ait.lablink.core.client.ex.ServiceTypeDoesNotMatchClientType,
+      java.io.IOException {
 
     logger.info( "Configuring client inputs..." );
 
@@ -462,9 +471,11 @@ public abstract class PlotterBase extends LablinkPlotLive {
 
       String unit = this.getOptionalConfigParam( inputConfig, INPUT_UNIT_TAG, "" );
 
+      boolean writeToFile = this.getOptionalConfigParam( inputConfig, INPUT_WRITE_TO_FILE_TAG, false );
+
       setInputPlottingAttributes( inputConfig, inputId, unit, intInput );
 
-      addInputDataService( inputId, dataType, unit, intInput );
+      addInputDataService( inputId, dataType, unit, intInput, writeToFile );
 
       ++intInput;
     }
@@ -503,11 +514,16 @@ public abstract class PlotterBase extends LablinkPlotLive {
    * @param dataType type of data associated to input signal (double or long)
    * @param unit unit associated to input signal
    * @param intInput unique integer ID of input signal
+   * @param writeToFile if true, in addition to plotting also write new values to CSV file
    * @throws at.ac.ait.lablink.core.client.ex.ServiceTypeDoesNotMatchClientType
    *   service type does not match client type
+   * @throws java.io.IOException
+   *   IO error
    */
-  private void addInputDataService( String inputId, String dataType, String unit, int intInput )
-      throws at.ac.ait.lablink.core.client.ex.ServiceTypeDoesNotMatchClientType {
+  private void addInputDataService( String inputId, String dataType, String unit,
+      int intInput, boolean writeToFile ) throws
+      at.ac.ait.lablink.core.client.ex.ServiceTypeDoesNotMatchClientType,
+      java.io.IOException {
 
     // Data service description.
     String serviceDesc = String.format( "Plotter input variable %1$s (%2$s)",
@@ -523,7 +539,9 @@ public abstract class PlotterBase extends LablinkPlotLive {
           inputId, serviceDesc, inputId, unit );
 
       // Add notifier.
-      dataService.addStateChangeNotifier( new DoubleInputDataNotifier( this, intInput ) );
+      dataService.addStateChangeNotifier(
+          new DoubleInputDataNotifier( inputId, this, intInput, writeToFile )
+      );
 
       // Add service to the client.
       client.addService( dataService );
@@ -537,7 +555,9 @@ public abstract class PlotterBase extends LablinkPlotLive {
           inputId, serviceDesc, inputId, unit );
 
       // Add notifier.
-      dataService.addStateChangeNotifier( new LongInputDataNotifier( this, intInput ) );
+      dataService.addStateChangeNotifier(
+          new LongInputDataNotifier( inputId, this, intInput, writeToFile )
+      );
 
       // Add service to the client.
       client.addService( dataService );

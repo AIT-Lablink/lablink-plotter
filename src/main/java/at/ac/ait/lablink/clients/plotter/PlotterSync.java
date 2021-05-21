@@ -121,6 +121,8 @@ public class PlotterSync extends PlotterBase {
    *   service type does not match client type
    * @throws org.apache.commons.configuration.ConfigurationException
    *   configuration error
+   * @throws java.io.IOException
+   *   IO error
    * @throws java.util.NoSuchElementException
    *   no such element
    */
@@ -134,6 +136,7 @@ public class PlotterSync extends PlotterBase {
       at.ac.ait.lablink.core.client.ex.ServiceIsNotRegisteredWithClientException,
       at.ac.ait.lablink.core.client.ex.ServiceTypeDoesNotMatchClientType,
       org.apache.commons.configuration.ConfigurationException,
+      java.io.IOException,
       java.util.NoSuchElementException {
 
     super( jsonConfig );
