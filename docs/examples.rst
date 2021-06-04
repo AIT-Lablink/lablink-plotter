@@ -19,11 +19,9 @@ Starting the configuration server
 Start the configuration server by executing script :github_blob:`run_config.cmd <examples/0_config/run_config.cmd>` in subdirectory :github_tree:`examples/0_config`.
 This will make the content of database file *test-config.db* available via http://localhost:10101.
 
-**NOTE**:
-Once the server is running, you can view the available configurations in a web browser via http://localhost:10101.
+.. note:: Once the server is running, you can view the available configurations in a web browser via http://localhost:10101.
 
-**TIP**:
-A convenient tool for viewing the content of the database file (and editing it for experimenting with the examples) is `DB Browser for SQLite <https://sqlitebrowser.org/>`_.
+.. seealso:: A convenient tool for viewing the content of the database file (and editing it for experimenting with the examples) is `DB Browser for SQLite <https://sqlitebrowser.org/>`_.
 
 Example 1: Asynchronous plotter
 ===============================
@@ -35,7 +33,7 @@ To run the example, execute all scripts either in separate command prompt window
 * :github_blob:`source.cmd <examples/1_async/source.cmd>`: runs the data source, which will send data to the plotter
 * :github_blob:`plot.cmd <examples/1_async/plot.cmd>`: runs the plotter, which will plot incoming data to the screen (and write one of the inputs to a CSV output file)
 
-The order in which the scripts are started is in principle arbitrary.
+.. note:: The order in which the scripts are started is arbitrary.
 
 Example 2: Synchronous plotter
 ==============================
@@ -48,5 +46,5 @@ To run the example, execute all scripts either in separate command prompt window
 * :github_blob:`plot.cmd <examples/2_sync/plot.cmd>`: runs the plotter, which will plot incoming data to the screen (and write one of the inputs to a CSV output file)
 * :github_blob:`sync.cmd <examples/2_sync/sync.cmd>`: runs the sync host
 
-Start the data point bridge and the clients first (in arbitrary order).
-**Before you start the sync host**, make sure that the **clients are already connected to the data point bridge** (check status messages of data point bridge).
+.. note:: Start the data point bridge and the clients first (in arbitrary order).
+  **Before you start the sync host**, make sure that the **clients are already connected to the data point bridge** (check status messages of data point bridge).
