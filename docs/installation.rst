@@ -14,6 +14,8 @@ Include the Lablink plotter clients to your Maven setup by including the followi
 Building from source
 ====================
 
+Installation from source requires a local **Java Development Kit** installation, for instance the `Oracle Java SE Development Kit 13 <https://www.oracle.com/technetwork/java/javase/downloads/index.html>`_ or the `OpenJDK <https://openjdk.java.net/>`_.
+
 Check out the project and compile it with `Maven <https://maven.apache.org/>`__:
 
 .. code-block:: none
