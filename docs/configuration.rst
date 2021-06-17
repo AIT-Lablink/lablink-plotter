@@ -29,7 +29,7 @@ Input configuration
 .. topic:: Configuration for each input
 
   :*InputID*: name of the input, used in plot legend
-  :*DataType*: data type of the input, allowed values are ``double`` and ``int``
+  :*DataType*: data type of the input, allowed values are ``double`` and ``long``
   :*Unit*: unit associated to the input, used in plot legend (optional)
   :*LineStyle*: string specifying the color for points, allowed values are ``solid``, ``dotted``, ``dashed``, ``dotdashed`` and ``dotdotdashed`` (optional, default: ``solid``)
   :*MarksStyle*: set the marks style, allowed values are ``none``, ``points`` and ``dots`` (optional, default: ``dots``)
