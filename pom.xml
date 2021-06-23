@@ -5,7 +5,7 @@
   <groupId>at.ac.ait.lablink.clients</groupId>
   <artifactId>plotter</artifactId>
   <version>0.0.2</version>
-  <name>lablink-plotter</name>
+  <name>Lablink Plotter</name>
   <description>This package provides Lablink clients that visualize data as plotted graphs in a separate window. </description>
   <url>https://github.com/ait-lablink/lablink-plotter</url>
 
