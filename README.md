@@ -1,3 +1,6 @@
+[![Maven Central](https://img.shields.io/maven-central/v/at.ac.ait.lablink.clients/plotter.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22at.ac.ait.lablink.clients%22%20AND%20a:%22plotter%22)
+[![Documentation Status](https://readthedocs.org/projects/ait-lablink-plotter/badge/?version=latest)](https://ait-lablink.readthedocs.io/projects/ait-lablink-plotter/en/latest/)
+
 # The Lablink Plotter
 
 ## About
