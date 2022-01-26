@@ -65,6 +65,8 @@ public class PlotterSync extends PlotterBase {
    *   IO error
    * @throws java.net.MalformedURLException
    *   malformed URL
+   * @throws java.net.URISyntaxException
+   *   URI syntax exception
    * @throws java.util.NoSuchElementException
    *   no such element
    */
@@ -82,6 +84,7 @@ public class PlotterSync extends PlotterBase {
       org.json.simple.parser.ParseException,
       java.io.IOException,
       java.net.MalformedURLException,
+      java.net.URISyntaxException,
       java.util.NoSuchElementException {
 
     // Retrieve configuration.
@@ -123,6 +126,8 @@ public class PlotterSync extends PlotterBase {
    *   configuration error
    * @throws java.io.IOException
    *   IO error
+   * @throws java.net.URISyntaxException
+   *   URI syntax exception
    * @throws java.util.NoSuchElementException
    *   no such element
    */
@@ -137,6 +142,7 @@ public class PlotterSync extends PlotterBase {
       at.ac.ait.lablink.core.client.ex.ServiceTypeDoesNotMatchClientType,
       org.apache.commons.configuration.ConfigurationException,
       java.io.IOException,
+      java.net.URISyntaxException,
       java.util.NoSuchElementException {
 
     super( jsonConfig );
@@ -153,7 +159,7 @@ public class PlotterSync extends PlotterBase {
   public synchronized void setSyncStartTime( long st ) {
     this.startTime = st;
   }
-  
+
 
   /**
    * Instances of class PlotterSync store a reference timestamp, which is used as
@@ -172,7 +178,7 @@ public class PlotterSync extends PlotterBase {
    * the origin of the plotter's time axis (x-axis). This function returns the time
    * difference between the current system time and the reference timestamp in seconds.
    *
-   * @return time difference between the current system time and the reference timestamp 
+   * @return time difference between the current system time and the reference timestamp
    *     in seconds
    */
   public synchronized double getElapsedTimeInSeconds() {

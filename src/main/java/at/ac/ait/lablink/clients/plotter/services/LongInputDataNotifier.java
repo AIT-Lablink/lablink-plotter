@@ -10,6 +10,8 @@ import at.ac.ait.lablink.clients.plotter.PlotterBase;
 import at.ac.ait.lablink.core.service.IServiceStateChangeNotifier;
 import at.ac.ait.lablink.core.service.LlService;
 
+import java.io.File;
+
 
 /**
  * Class LongInputDataNotifier.
@@ -29,17 +31,22 @@ public class LongInputDataNotifier
    * @param pl associated plotter instance
    * @param ds unique integer ID of associated client input
    * @param wf if true, in addition to plotting also write new values to CSV file
+   * @param pf path for writing output file
+   * @param ut if true, use timestamps instead of elapsed runtime in CSV files
    * @throws java.io.IOException adding header to the CSV output file failed
    */
-  public LongInputDataNotifier( String id, PlotterBase pl, int ds, boolean wf )
-      throws java.io.IOException {
+  public LongInputDataNotifier( String id, PlotterBase pl, int ds,
+      boolean wf, String pf, boolean ut ) throws
+    java.io.IOException {
+
     plotter = pl;
     dataset = ds;
     writeToFile = wf;
 
     if ( writeToFile ) {
       // Initialize CSV output file.
-      initializeFileWriter( id, id + ".csv" );
+      File outputFile = new File( pf, id + ".csv" );
+      initializeFileWriter( id, outputFile, ut );
     }
   }
 

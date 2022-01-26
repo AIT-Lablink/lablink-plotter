@@ -45,9 +45,12 @@ import ptolemy.util.StringUtilities;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import java.nio.file.Files;
@@ -77,6 +80,8 @@ public abstract class PlotterBase extends LablinkPlotLive {
   protected static final String CLIENT_SHELL_TAG = "ClientShell";
   protected static final String CLIENT_URI_LL_PROPERTIES = "labLinkPropertiesUrl";
   protected static final String CLIENT_URI_SYNC_PROPERTIES = "syncHostPropertiesUrl";
+  protected static final String CLIENT_WRITE_DATA_DIR_URI_TAG = "WriteDataDirURI";
+  protected static final String CLIENT_WRITE_DATA_TIMESTAMP_TAG = "WriteDataTimestamp";
 
   protected static final String INPUT_CONFIG_TAG = "Input";
   protected static final String INPUT_CONNECT_TAG = "Connected";
@@ -130,8 +135,8 @@ public abstract class PlotterBase extends LablinkPlotLive {
    *   IO error
    * @throws java.net.MalformedURLException
    *   malformed URL
-   * @throws java.io.IOException
-   *   IO error
+   * @throws java.net.URISyntaxException
+   *   URI syntax exception
    * @throws java.util.NoSuchElementException
    *   no such element
    */
@@ -141,6 +146,7 @@ public abstract class PlotterBase extends LablinkPlotLive {
       org.json.simple.parser.ParseException,
       java.io.IOException,
       java.net.MalformedURLException,
+      java.net.URISyntaxException,
       java.util.NoSuchElementException {
 
     // Define command line option.
@@ -291,6 +297,8 @@ public abstract class PlotterBase extends LablinkPlotLive {
    *   configuration error
    * @throws java.io.IOException
    *   IO error
+   * @throws java.net.URISyntaxException
+   *   URI syntax exception
    * @throws java.util.NoSuchElementException
    *   no such element
    */
@@ -305,6 +313,7 @@ public abstract class PlotterBase extends LablinkPlotLive {
       at.ac.ait.lablink.core.client.ex.ServiceTypeDoesNotMatchClientType,
       org.apache.commons.configuration.ConfigurationException,
       java.io.IOException,
+      java.net.URISyntaxException,
       java.util.NoSuchElementException {
 
     // Retrieve basic client configuration.
@@ -443,12 +452,28 @@ public abstract class PlotterBase extends LablinkPlotLive {
    *   service type does not match client type
    * @throws java.io.IOException
    *   IO error
+   * @throws java.net.URISyntaxException
+   *   URI syntax exception
    */
   private void configureClientInputs( JSONObject jsonConfig ) throws
       at.ac.ait.lablink.core.client.ex.ServiceTypeDoesNotMatchClientType,
-      java.io.IOException {
+      java.io.IOException,
+      java.net.URISyntaxException {
 
     logger.info( "Configuring client inputs..." );
+
+    JSONObject clientConfig = this.<JSONObject>getRequiredConfigParam( jsonConfig,
+        CLIENT_CONFIG_TAG, String.format( "Client configuration (JSON object with tag '%1$s') "
+        + "is missing", CLIENT_CONFIG_TAG ) );
+
+    String writeToFileDirUri = this.<String>getOptionalConfigParam( clientConfig,
+        CLIENT_WRITE_DATA_DIR_URI_TAG, null );
+
+    // Retrieve path to directory for writing output files.
+    String writeToFileDir = getOutputDataDir( writeToFileDirUri );
+
+    boolean useTimestamps = this.getOptionalConfigParam( clientConfig,
+        CLIENT_WRITE_DATA_TIMESTAMP_TAG, false );
 
     JSONArray inputConfigList = this.<JSONArray>getRequiredConfigParam( jsonConfig,
         INPUT_CONFIG_TAG, String.format( "Plotter input definition (JSON array with tag "
@@ -471,11 +496,13 @@ public abstract class PlotterBase extends LablinkPlotLive {
 
       String unit = this.getOptionalConfigParam( inputConfig, INPUT_UNIT_TAG, "" );
 
-      boolean writeToFile = this.getOptionalConfigParam( inputConfig, INPUT_WRITE_TO_FILE_TAG, false );
+      boolean writeToFile = this.getOptionalConfigParam( inputConfig,
+          INPUT_WRITE_TO_FILE_TAG, false );
 
       setInputPlottingAttributes( inputConfig, inputId, unit, intInput );
 
-      addInputDataService( inputId, dataType, unit, intInput, writeToFile );
+      addInputDataService( inputId, dataType, unit, intInput,
+          writeToFile, writeToFileDir, useTimestamps );
 
       ++intInput;
     }
@@ -515,13 +542,15 @@ public abstract class PlotterBase extends LablinkPlotLive {
    * @param unit unit associated to input signal
    * @param intInput unique integer ID of input signal
    * @param writeToFile if true, in addition to plotting also write new values to CSV file
+   * @param writeToFileDir path to directory for writing output CSV files
+   * @param useTimestamps if true, use timestamps instead of elapsed runtime in CSV files
    * @throws at.ac.ait.lablink.core.client.ex.ServiceTypeDoesNotMatchClientType
    *   service type does not match client type
    * @throws java.io.IOException
    *   IO error
    */
   private void addInputDataService( String inputId, String dataType, String unit,
-      int intInput, boolean writeToFile ) throws
+      int intInput, boolean writeToFile, String writeToFileDir, boolean useTimestamps ) throws
       at.ac.ait.lablink.core.client.ex.ServiceTypeDoesNotMatchClientType,
       java.io.IOException {
 
@@ -540,7 +569,8 @@ public abstract class PlotterBase extends LablinkPlotLive {
 
       // Add notifier.
       dataService.addStateChangeNotifier(
-          new DoubleInputDataNotifier( inputId, this, intInput, writeToFile )
+          new DoubleInputDataNotifier( inputId, this, intInput,
+              writeToFile, writeToFileDir, useTimestamps )
       );
 
       // Add service to the client.
@@ -556,7 +586,8 @@ public abstract class PlotterBase extends LablinkPlotLive {
 
       // Add notifier.
       dataService.addStateChangeNotifier(
-          new LongInputDataNotifier( inputId, this, intInput, writeToFile )
+          new LongInputDataNotifier( inputId, this, intInput,
+              writeToFile, writeToFileDir, useTimestamps )
       );
 
       // Add service to the client.
@@ -566,6 +597,55 @@ public abstract class PlotterBase extends LablinkPlotLive {
           String.format( "Plotter input data type not supported: '%1$s'", dataType )
       );
     }
+  }
+
+
+  /**
+   * Configure the plot attributes for each client input.
+   *
+   * @param writeToFileDirUri URI to directory for writing output files (string)
+   * @return path to directory for writing output files (string)
+   * @throws java.io.IOException
+   *   IO exception
+   * @throws java.net.URISyntaxException
+   *   URI syntax exception
+   */
+  private String getOutputDataDir( String writeToFileDirUri ) throws
+      java.io.IOException,
+      java.net.URISyntaxException {
+
+    String writeToFileDir;
+
+    if ( writeToFileDirUri == null ) {
+      writeToFileDir = System.getProperty( "user.dir" );
+    } else {
+
+      URI checkUri = new URI( writeToFileDirUri );
+      File checkDir;
+
+      if ( checkUri.getScheme().equals( "plotter" ) ) {
+        String strDataDir = System.getProperty( "dataDir" );
+        if ( strDataDir == null ) {
+          strDataDir = System.getProperty( "user.dir" );
+        }
+        checkDir = new File( strDataDir, checkUri.getSchemeSpecificPart() );
+      } else {
+        checkDir = new File( checkUri );
+      }
+
+      if ( checkDir.isDirectory() == true ) {
+        writeToFileDir = checkDir.toString();
+      } else if ( checkDir.exists() == false ) {
+        checkDir.mkdir();
+        writeToFileDir = checkDir.toString();
+      } else {
+        throw new IOException(
+          String.format( "Not a valid directory: '%1$s'", writeToFileDirUri )
+          );
+      }
+    }
+
+    return writeToFileDir;
   }
 
 
