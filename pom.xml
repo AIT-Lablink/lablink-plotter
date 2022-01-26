@@ -4,7 +4,7 @@
 
   <groupId>at.ac.ait.lablink.clients</groupId>
   <artifactId>plotter</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
   <name>Lablink Plotter</name>
   <description>This package provides Lablink clients that visualize data as plotted graphs in a separate window. </description>
   <url>https://github.com/ait-lablink/lablink-plotter</url>
@@ -272,7 +272,7 @@
     <dependency>
       <groupId>at.ac.ait.lablink</groupId>
       <artifactId>config</artifactId>
-      <version>0.0.1</version>
+      <version>0.1.0</version>
       <classifier>jar-with-dependencies</classifier>
       <scope>provided</scope>
     </dependency>
