@@ -6,7 +6,7 @@ REM Connection string for configuration server.
 SET LLCONFIG=http://localhost:10101/get?id=
 
 REM Version of plotter package.
-SET VERSION=0.0.2
+SET VERSION=0.0.3
 
 REM Root directory of plotter package (only change this if you really know what you are doing).
 SET PLOTTER_ROOT_DIR=%~DP0..
@@ -24,7 +24,7 @@ REM Path to Java JAR file of standalone sync host.
 SET SYNC_JAR_FILE=%PLOTTER_ROOT_DIR%\target\dependency\sync-0.0.1-jar-with-dependencies.jar
 
 REM Path to Java JAR file of config server.
-SET CONFIG_JAR_FILE=%PLOTTER_ROOT_DIR%\target\dependency\config-0.0.1-jar-with-dependencies.jar
+SET CONFIG_JAR_FILE=%PLOTTER_ROOT_DIR%\target\dependency\config-0.1.0-jar-with-dependencies.jar
 
 REM Check if environment variable JAVA_HOME has been defined.
 IF NOT DEFINED JAVA_HOME (

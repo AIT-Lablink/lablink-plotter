@@ -15,13 +15,31 @@ In the following, the configuration parameters for these categories are listed.
 Client configuration
 ====================
 
-:*ClientName*: client name
-:*GroupName*: group name
-:*ScenarioName*: scenario name
-:*labLinkPropertiesUrl*: URI to Lablink configuration
-:*syncHostPropertiesUrl*: URI to sync host configuration
-:*ClientDescription*: description of the client (optional)
-:*ClientShell*: activate Lablink shell (optional, default: ``false``).
+.. topic:: general client configuration
+
+  :*ClientName*: client name
+  :*GroupName*: group name
+  :*ScenarioName*: scenario name
+  :*labLinkPropertiesUrl*: URI to Lablink configuration
+  :*syncHostPropertiesUrl*: URI to sync host configuration
+  :*ClientDescription*: description of the client (optional)
+  :*ClientShell*: activate Lablink shell (optional, default: ``false``).
+
+Data plotted to the screen can also be stored as timeseries in CSV files.
+This can be configured individually for each input of the plotter (see parameter *WriteToFile* of the `input configuration <#input-configuration>`_).
+The following parameters determine the general configuration of the CSV output, which is applied to all data written to CSV files.
+
+.. topic:: CSV output configuration
+
+  :*WriteDataDirURI*: Specify in which directory to write the CSV output files as URI.
+    If the specifed directory does not exist, the plotter will try to create it.
+    If not specified, CSV files are written to the current working directory.
+    Paths can be specified as ``plotter://relative/path/to/dir``, where the path will be interpreted relative to the path specified via `system property <https://www.ibm.com/docs/en/sdk-java-technology/7?topic=customization-how-specify-javalangsystem-property>`__ ``dataDir``.
+    For instance, using option ``-DdataDir=/a/b/c`` when starting the plotter client and specifiying ``plotter://x/y/z`` will result in CSV files being written to directory ```/a/b/c/x/y/z``.
+    (optional)
+  :*WriteDataTimestamp*: If ``true``, the timeseries written to the CSV files use timestamps.
+    Otherwise, the elapsed time since starting the plotter is used.
+    (optional, default: ``false``)
 
 Input configuration
 ===================
@@ -70,6 +88,7 @@ Example configuration
        "ClientShell": false,
        "GroupName": "PlotterDemo",
        "ScenarioName": "PlotterSync",
+       "WriteDataDirURI": "file:///C:/Development/lablink/plotter",
        "labLinkPropertiesUrl": "http://localhost:10101/get?id=ait.all.all.llproperties",
        "syncHostPropertiesUrl": "http://localhost:10101/get?id=ait.test.plotter.sync.sync-host.properties"
      },
