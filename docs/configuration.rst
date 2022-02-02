@@ -15,7 +15,7 @@ In the following, the configuration parameters for these categories are listed.
 Client configuration
 ====================
 
-.. topic:: general client configuration
+.. topic:: General client configuration
 
   :*ClientName*: client name
   :*GroupName*: group name
