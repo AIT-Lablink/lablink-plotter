@@ -1,0 +1,24 @@
+# Example data sources live in src/test and are not part of the published plotter image.
+# Build context is the plotter project root.
+FROM maven:3.9-eclipse-temurin-11 AS build
+WORKDIR /build
+
+COPY pom.xml .
+RUN mvn -B -e dependency:go-offline
+
+COPY src ./src
+# package runs test-compile and writes the fat jar. Tests and javadoc are not needed here.
+RUN mvn -B package -DskipTests -Dmaven.javadoc.skip=true
+
+FROM eclipse-temurin:11-jre-jammy
+WORKDIR /app
+
+COPY --from=build /build/target/assembly/plotter-0.0.4-jar-with-dependencies.jar /app/plotter.jar
+COPY --from=build /build/target/test-classes /app/test-classes
+
+# $LLCONFIG$ tokens in the data-source classes are expanded at runtime.
+ENV LLCONFIG=http://lablink-config:10101/get?id=
+ENV LOGGER_ID=ait.all.all.log4j2
+ENV MAIN_CLASS=async.DataSourceAsync
+
+ENTRYPOINT ["/bin/sh", "-c", "exec java -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -Dlog4j.configurationFile=${LLCONFIG}${LOGGER_ID} -cp /app/test-classes:/app/plotter.jar ${MAIN_CLASS}"]
