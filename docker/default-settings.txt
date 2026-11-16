@@ -1,0 +1,14 @@
+# Xpra HTML5 client defaults for the Lablink plotter.
+# Keys are the URL parameters documented in xpra-html5/docs/Configuration.md.
+
+# No clipboard sharing: Firefox otherwise shows a "Paste" prompt on every click.
+clipboard = false
+clipboard_poll = false
+
+# Show only the plotter window, no xpra toolbar.
+floating_menu = false
+
+# Nothing to print or transfer from a plot window.
+printing = false
+file_transfer = false
+sound = false

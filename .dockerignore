@@ -1,0 +1,4 @@
+target
+docs/_build
+.git
+*.log

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--
+  Replaces the xpra-html5 connect form. index.html auto-connects to the
+  plotter session and redirects here when the connection is lost; instead of
+  showing a form, wait briefly and try again.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Lablink plotter - reconnecting</title>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body {
+      display: flex; align-items: center; justify-content: center;
+      background: #eee; color: #333;
+      font-family: "DejaVu Sans", Verdana, sans-serif;
+    }
+    .box { text-align: center; }
+    .reason { color: #777; font-size: 0.9em; margin-top: 0.5em; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div>Connection to the plotter lost &ndash; reconnecting&hellip;</div>
+    <div class="reason" id="reason"></div>
+  </div>
+  <script>
+    (function () {
+      var RETRY_MS = 3000;
+      // The xpra client saves its parameters (incl. the disconnect reason)
+      // as JSON in sessionStorage under an empty key.
+      try {
+        var params = JSON.parse(sessionStorage.getItem("") || "{}");
+        if (params.disconnect) {
+          document.getElementById("reason").textContent = params.disconnect;
+        }
+      } catch (e) { /* ignore */ }
+
+      function retry() {
+        // Only redirect once the server answers again, otherwise keep polling.
+        fetch("index.html", { cache: "no-store" })
+          .then(function (r) {
+            if (r.ok) { window.location.replace("index.html"); }
+            else { setTimeout(retry, RETRY_MS); }
+          })
+          .catch(function () { setTimeout(retry, RETRY_MS); });
+      }
+      setTimeout(retry, RETRY_MS);
+    })();
+  </script>
+</body>
+</html>
