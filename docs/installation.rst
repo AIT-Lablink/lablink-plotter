@@ -1,5 +1,8 @@
+Installation
+============
+
 Maven
-=====
+-----
 
 The Lablink plotter's compiled Java package is available on the |MCR|_.
 Use it in your local Maven_ setup by including the following dependency into your *pom.xml*:
@@ -16,7 +19,7 @@ Use it in your local Maven_ setup by including the following dependency into you
 
 
 Building from source
-====================
+--------------------
 
 Installation from source requires a local **Java Development Kit** installation, for instance the `Oracle Java SE Development Kit 13 <https://www.oracle.com/technetwork/java/javase/downloads/index.html>`_ or the `OpenJDK <https://openjdk.java.net/>`_.
 
@@ -29,7 +32,20 @@ Check out the project and compile it with Maven_:
    mvnw clean package
 
 This should create JAR file *plotter-<VERSION>-jar-with-dependencies.jar* in subdirectory *target/assembly*.
-Also, all additional Lablink resources needed for running the :doc:`examples <examples>` will be copied to directory *target/dependency*.
+
+Docker image
+------------
+
+A ready-to-run image is published on `Docker Hub <https://hub.docker.com/r/ait1/lablink-plotter>`_ as ``ait1/lablink-plotter:latest``:
+
+.. code-block:: winbatch
+
+   docker pull ait1/lablink-plotter:latest
+
+The plot window is served in a browser on port ``8080``.
+See :doc:`here <running>` for how to start the container.
+Building the image locally with :github_blob:`docker/build.cmd <docker/build.cmd>` tags the result with the same name.
+
 
 .. |MCR| replace:: Maven Central Repository
 .. _MCR: https://search.maven.org/artifact/at.ac.ait.lablink.clients/plotter

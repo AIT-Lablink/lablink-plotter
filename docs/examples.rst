@@ -1,57 +1,75 @@
+Overview
+========
+
+These examples show a plotter drawing two signals that a data source publishes.
+
+* A signal of type ``DOUBLE`` is ``10 * cos(pi * n / 20)``, where ``n`` is the sample index.
+* A signal of type ``LONG`` is the integer part of ``5 * cos(pi * n / 30)``, where ``n`` is the sample index.
+
+In the **asynchronous** example the source sends a sample every 300 ms.
+The horizontal axis of the plotter shows wall-clock time.
+
+In the **synchronous** example the source sends one sample at each synchronization step.
+The sync host runs one minute of emulation in steps of 200 ms.
+The horizontal axis of the plotter shows that synchronization time.
+
+
 Prerequisites
 =============
 
-Required Lablink resources
---------------------------
+The examples run with Docker Compose.
+These images are published on Docker Hub and are pulled automatically:
 
-The following Lablink resources are required:
+* ``ait1/lablink-config-server:latest``
+* ``ait1/lablink-datapoint-bridge:latest``
+* ``ait1/lablink-plotter:latest``
+* ``ait1/lablink-sync-host:latest``
 
-* `Configuration Server <https://ait-lablink.readthedocs.io/projects/lablink-config-server>`_: *config-0.0.1-jar-with-dependencies.jar*
-* `Datapoint Bridge <https://ait-lablink.readthedocs.io/projects/lablink-datapoint-bridge>`_: *dpbridge-0.0.1-jar-with-dependencies.jar*
-* `Simple Sync Host <https://ait-lablink.readthedocs.io/projects/lablink-sync-host)>`_: *sync-0.0.1-jar-with-dependencies.jar*
+Compose builds the data source itself from :github_blob:`Dockerfile.source <examples/docker/Dockerfile.source>`.
+Both examples publish the configuration server on port ``10101`` and the plotter on port ``8080``, so run only one of them at a time.
 
-When :doc:`building from source <installation>`, the corresponding JAR files will be copied to directory *target/dependency*.
+The stacks share :github_blob:`test-config.db <examples/config/test-config.db>` and :github_blob:`mosquitto.conf <examples/config/mosquitto.conf>`.
+Inside the containers the broker host is ``mqtt`` and the configuration server host is ``lablink-config``.
+The sync host does not load the shared Lablink properties, so its own entry in that database sets ``lowLevelComm.brokerAddress`` to ``mqtt``.
 
-
-Starting the configuration server
----------------------------------
-
-Start the configuration server by executing script :github_blob:`run_config.cmd <examples/0_config/run_config.cmd>` in subdirectory :github_tree:`examples/0_config`.
-This will make the content of database file *test-config.db* available via http://localhost:10101.
-
-.. note:: Once the server is running, you can view the available configurations in a web browser via http://localhost:10101.
+.. note:: Once a stack is running, the available configurations are listed at http://localhost:10101.
 
 .. seealso:: A convenient tool for viewing the content of the database file (and editing it for experimenting with the examples) is `DB Browser for SQLite <https://sqlitebrowser.org/>`_.
-
-
-MQTT broker
------------
-
-An **MQTT broker** is required for running the example, for instance `Eclipse Mosquitto <https://mosquitto.org/>`_ or `EMQ <http://emqtt.io/>`_.
 
 
 Example 1: Asynchronous plotter
 ===============================
 
-All relevant scripts can be found in subdirectory :github_tree:`examples/1_async`.
-To run the example, execute all scripts either in separate command prompt windows or by double-clicking:
+The Compose file is :github_blob:`examples/async/docker-compose.yml <examples/async/docker-compose.yml>`.
+From :github_tree:`examples/async`:
 
-* :github_blob:`dpb.cmd <examples/1_async/dpb.cmd>`: runs the data point bridge service, connecting the data source and the plotter
-* :github_blob:`source.cmd <examples/1_async/source.cmd>`: runs the data source, which will send data to the plotter
-* :github_blob:`plot.cmd <examples/1_async/plot.cmd>`: runs the plotter, which will plot incoming data to the screen (and write one of the inputs to a CSV output file)
+.. code-block:: bash
 
-.. note:: The order in which the scripts are started is arbitrary.
+   docker compose up
+
+This starts Mosquitto, the configuration server, the datapoint bridge, the data source, and the plotter.
+The plotter window is at http://localhost:8080.
+CSV output is written to ``examples/async/data``.
+
 
 Example 2: Synchronous plotter
 ==============================
 
-All relevant scripts can be found in subdirectory :github_tree:`examples/2_sync`.
-To run the example, execute all scripts either in separate command prompt windows or by double-clicking:
+The Compose file is :github_blob:`examples/sync/docker-compose.yml <examples/sync/docker-compose.yml>`.
+From :github_tree:`examples/sync`:
 
-* :github_blob:`dpb.cmd <examples/2_sync/dpb.cmd>`: runs the data point bridge service, connecting the data source and the plotter
-* :github_blob:`source.cmd <examples/2_sync/source.cmd>`: runs the data source, which will send data to the plotter
-* :github_blob:`plot.cmd <examples/2_sync/plot.cmd>`: runs the plotter, which will plot incoming data to the screen (and write one of the inputs to a CSV output file)
-* :github_blob:`sync.cmd <examples/2_sync/sync.cmd>`: runs the sync host
+.. code-block:: bash
 
-.. note:: Start the data point bridge and the clients first (in arbitrary order).
-  **Before you start the sync host**, make sure that the **clients are already connected to the data point bridge** (check status messages of data point bridge).
+   docker compose up
+
+This starts Mosquitto, the configuration server, the datapoint bridge, the data source, and the plotter.
+The plotter window is at http://localhost:8080.
+CSV output is written to ``examples/sync/data``.
+
+Start the sync host only after the datapoint bridge reports that the clients are connected:
+
+.. code-block:: bash
+
+   docker compose --profile sync-host up sync-host
+
+The scenario file is :github_blob:`sync_config_plotter.json <examples/sync/sync_config_plotter.json>`.
