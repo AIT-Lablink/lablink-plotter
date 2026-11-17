@@ -21,6 +21,7 @@ The defaults are ``LLCONFIG=http://lablink-config:10101/get?id=``, ``PLOT_CONFIG
 ``PLOT_CLASS`` selects ``at.ac.ait.lablink.clients.plotter.PlotterAsync`` or ``at.ac.ait.lablink.clients.plotter.PlotterSync``.
 ``MEMORY_FLAG`` is the JVM heap setting and defaults to ``-Xmx512m``.
 ``LOGGER_ID`` is the logging configuration id and defaults to ``ait.all.log4j2``.
+``SESSION_NAME`` is the browser tab title and defaults to ``Lablink Plotter``.
 When ``DATA_DIR`` is set, the client is started with ``-DdataDir`` set to that path, which is the base for a ``plotter://`` output directory (see :doc:`configuration`).
 
 The plot window is an HTML desktop on port ``8080``.

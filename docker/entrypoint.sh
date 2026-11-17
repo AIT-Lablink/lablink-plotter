@@ -3,6 +3,8 @@ set -eu
 
 # Derive URLs at container start so -e LLCONFIG=... takes effect.
 LOGGER_ID=${LOGGER_ID:-ait.all.log4j2}
+# Browser tab title.
+SESSION_NAME="${SESSION_NAME:-Lablink Plotter}"
 LOGGER_CONFIG="-Dlog4j.configurationFile=${LLCONFIG}${LOGGER_ID}"
 CONFIG_FILE_URI="${LLCONFIG}${PLOT_CONFIG}"
 
@@ -19,6 +21,7 @@ echo MEMORY_FLAG: $MEMORY_FLAG
 echo PLOT_JAR_FILE: $PLOT_JAR_FILE
 echo PLOT_CLASS: $PLOT_CLASS
 echo CONFIG_FILE_URI: $CONFIG_FILE_URI
+echo SESSION_NAME: $SESSION_NAME
 
 # Desktop mode keeps pointer coordinates in sync with the HTML5 canvas.
 # resize-display=yes matches the browser size; matchbox maximises the plotter into it.
@@ -28,6 +31,7 @@ echo CONFIG_FILE_URI: $CONFIG_FILE_URI
 exec xpra start-desktop :100 \
   --bind-tcp=0.0.0.0:8080 \
   --html=on \
+  --session-name="$SESSION_NAME" \
   --xvfb='Xvfb -screen 0 3840x2160x24 -dpi 96 +extension GLX +extension RANDR +extension RENDER +extension Composite -extension DOUBLE-BUFFER -nolisten tcp -noreset -auth $XAUTHORITY' \
   --resize-display=yes \
   --desktop-scaling=off \

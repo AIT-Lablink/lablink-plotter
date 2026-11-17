@@ -70,6 +70,9 @@ ENV PLOT_JAR_FILE=/app/lib/plotter-0.0.4-jar-with-dependencies.jar
 # Specify the maximum size (in bytes) of the memory allocation pool.
 ENV MEMORY_FLAG=-Xmx512m
 
+# Browser tab title for the HTML desktop. Override at runtime with -e SESSION_NAME=...
+ENV SESSION_NAME="Lablink Plotter"
+
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
